@@ -1,5 +1,22 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { IonicModule } from '@ionic/angular';
 //Añadir los imports necesarios
+
+interface RootPreguntas {
+  response_code: number;
+  results: Preguntas[];
+}
+
+interface Preguntas {
+  type: string;
+  difficulty: string;
+  category: string;
+  question: string;
+  correct_answer: string;
+  incorrect_answers: string[];
+}
 
 @Component({
   selector: 'app-preguntas',
@@ -23,19 +40,24 @@ export class PreguntasComponent implements OnInit {
   //Gestionará el visualizado del botón Volver a Jugar.
   mostrarBotonesAdicionales: boolean = false;
 
-  constructor() {}
+  constructor(public cargar: HttpClient) {}
 
   ngOnInit() {
 
+    this.cargarPreguntas();
   }
 
   private cargarPreguntas() {
     //Llamamos al API mediante un observable
-    
+    let observableRest: Observable<RootPreguntas>= this.cargar.get<RootPreguntas>("https://opentdb.com/api.php?amount=10&difficulty=easy&type=multiple");
     //Suscripción al observable
+    observableRest.subscribe( datos => {
+      console.log(datos);
+      this.listaPreguntas.push(...datos.results);
+    });
  
       //Recorremos la lista de preguntas
-
+    for (let pregunta of this.listaPreguntas) { 
         /* Mezclamos el orden del array:
          * Creamos un array con los 3 valores que vienen en "incorrect_answer" + la "correct_answer".
          * Si vemos la interface, podemos observar que --> correct_answer: string; incorrect_answers: string[];
@@ -46,7 +68,8 @@ export class PreguntasComponent implements OnInit {
          * todos los valores de la interface estén rellenas.
          */
         return { ...pregunta, respuestasAleatorias };
-
+    }
+    return{};
 
   }
 

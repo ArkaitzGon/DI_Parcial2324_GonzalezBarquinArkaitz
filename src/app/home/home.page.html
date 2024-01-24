@@ -4,6 +4,17 @@
       TRIVIA
     </ion-title>
     <!-- Añadir ion-segment-->
+    <ion-segment value="introduccion">
+      <ion-segment-button value="introduccion">
+        <ion-label>Introduccion</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="preguntas">
+        <ion-label>Preguntas</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="ranking">
+        <ion-label>Ranking</ion-label>
+      </ion-segment-button>
+    </ion-segment>
   </ion-toolbar>
 </ion-header>
 
@@ -11,5 +22,6 @@
   <!-- Gestionar el control para mostrar un componente u otro. 
     -- Utilizaremos un ion-card por cada componente.
     -->
+  <img [src]=this.url/>
 </ion-content>
 
